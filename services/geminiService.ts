@@ -10,9 +10,11 @@ export async function generateReplies(
   catalog: string,
   numReplies: number
 ): Promise<string[]> {
-  const apiKey = process.env.API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
+  console.log('Using API Key:', apiKey);
   if (!apiKey) {
     throw new Error('API_KEY environment variable not set');
+    console.log('Using API Key:', apiKey);
   }
 
   const ai = new GoogleGenAI({ apiKey });
