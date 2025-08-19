@@ -7,7 +7,8 @@ export async function generateReplies(
   mainContext: string,
   overallContext: string,
   tone: Tone,
-  catalog: string
+  catalog: string,
+  numReplies: number
 ): Promise<string[]> {
   const apiKey = process.env.API_KEY;
   if (!apiKey) {
@@ -17,7 +18,7 @@ export async function generateReplies(
   const ai = new GoogleGenAI({ apiKey });
 
   const prompt = `
-    You are an expert customer support agent. Your task is to craft one reply that meets a required length and includes suggestions(not always) , tone-aware reply to a public comment.
+    You are an expert customer support agent. Your task is to craft ${numReplies} distinct, tone-aware ${numReplies > 1 ? 'replies' : 'reply'} to a public comment.
 
     **Instructions:**
     1.  Adopt a ${tone} tone.
@@ -26,8 +27,8 @@ export async function generateReplies(
     4.  If the user's comment involves a product, consult the 'Product Catalog' provided below to get information.
     5.  If a user asks about a product that isn't a good fit or is unavailable, use the catalog to recommend a better-fit alternative if one exists.
     6.  **Crucially, never invent details.** Do not make up product names, features, prices, or availability. If the information isn't in the catalog, state that you don't have that information.
-    7.  The reply must be concise.
-    8.  The output must be a valid JSON array containing a single string.
+    7.  Each reply must be concise.
+    8.  The output must be a valid JSON array containing ${numReplies} string(s).
 
     **Original Comment:**
     "${comment}"
@@ -36,7 +37,7 @@ export async function generateReplies(
     ${overallContext ? `**Overall Context (General guidance):**\n"${overallContext}"` : ''}
     ${catalog ? `**Product Catalog (for reference):**\n${catalog}` : ''}
 
-    Generate 1 reply.
+    Generate ${numReplies} repl${numReplies > 1 ? 'ies' : 'y'}.
   `;
   
   try {
