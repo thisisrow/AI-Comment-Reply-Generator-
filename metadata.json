@@ -1,0 +1,5 @@
+{
+  "name": "AI Comment Reply Generator",
+  "description": "An AI-powered web application that generates contextual and tone-aware replies to user-provided comments. Users can specify the tone, add context, and choose the number of reply suggestions they want.",
+  "requestFramePermissions": []
+}
